@@ -1,0 +1,210 @@
+1. Запрос на вывод категорий товаров (начиная с самых популярных)
+SELECT Category
+FROM Products
+GROUP BY Category
+ORDER BY count(Category) DESC
+
+
+А/B test.
+конверсия в корзину у двух групп равная, но у первой (=default)
+пользователи еще не прошли проверку на адрес. Значит нужна разность (Всего положивших в корзину пользователей А-группы) и (процент не нашедших адрес пользователей А-группы) 
+2. Конверсия в корзину А-группы
+SELECT count(t2.timestamp)
+FROM [Add to Cart Clicked] t2
+JOIN [AB Test Hit] t1 
+ON t2.anonymous_id = t1.anonymous_id
+WHERE t1.[group] = 'default'
+
+3. количество ненайденых адресов в А-группе
+SELECT count(t2.timestamp)
+FROM [Address Not In Delivery Zone] t2
+JOIN [AB Test Hit] t1 
+ON t2.anonymous_id = t1.anonymous_id
+WHERE t1.[group] = 'default'
+
+4.График разницы между группами:
+
+import seaborn as sns
+
+x = ['A', 'B']
+y = [5380/108096, 1852/24130]
+
+sns.barplot(x=x, y=y);
+
+5. Аномалия №1
+Количество пользователей по дням:
+select count(t1.timestamp) [дни теста]
+from [Landing Viewed] t1 JOIN [AB Test Hit] t2
+ON t1.anonymous_id=t2.anonymous_id
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-11-26%'
+UNION ALL
+select count(t1.timestamp) [числа ноября]
+from [Landing Viewed] t1 JOIN [AB Test Hit] t2
+ON t1.anonymous_id=t2.anonymous_id
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-11-27%'
+UNION ALL
+select count(t1.timestamp) 
+from [Landing Viewed] t1 JOIN [AB Test Hit] t2
+ON t1.anonymous_id=t2.anonymous_id
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-11-28%'
+UNION ALL
+select count(t1.timestamp) 
+from [Landing Viewed] t1 JOIN [AB Test Hit] t2
+ON t1.anonymous_id=t2.anonymous_id
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-11-29%'
+UNION ALL
+select count(t1.timestamp) [числа декабря]
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-01%'
+UNION ALL
+select count(t1.timestamp) 
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-02%'
+UNION ALL
+select count(t1.timestamp) 
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-03%'
+UNION ALL
+select count(t1.timestamp) 
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-04%'
+UNION ALL
+select count(t1.timestamp) --[5 декабря]
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-05%'
+UNION ALL
+select count(t1.timestamp) --[6 декабря]
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-06%'
+UNION ALL
+select count(t1.timestamp) --[7 декабря]
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-07%'
+UNION ALL
+select count(t1.timestamp) --[8 декабря]
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-08%'
+UNION ALL
+select count(t1.timestamp) --[9 декабря]
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-09%'
+UNION ALL
+select count(t1.timestamp) --[10 декабря]
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-10%'
+UNION ALL
+select count(t1.timestamp) --[11 декабря]
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-11%'
+UNION ALL
+select count(t1.timestamp) --[12 декабря]
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-12%'
+UNION ALL
+select count(t1.timestamp) --[13 декабря]
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-13%'
+UNION ALL
+select count(t1.timestamp) --[14 декабря]
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-14%'
+UNION ALL
+select count(t1.timestamp) --[15 декабря]
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-15%'
+UNION ALL
+select count(t1.timestamp) --[16 декабря]
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-16%'
+UNION ALL
+select count(t1.timestamp) --[числа декабря]
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-17%'
+UNION ALL
+select count(t1.timestamp) 
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-18%'
+UNION ALL
+select count(t1.timestamp) 
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-19%'
+UNION ALL
+select count(t1.timestamp) 
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-20%'
+UNION ALL
+select count(t1.timestamp)
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-21%'
+UNION ALL
+select count(t1.timestamp) 
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-22%'
+UNION ALL
+select count(t1.timestamp) 
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-23%'
+UNION ALL
+select count(t1.timestamp) 
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-24%'
+UNION ALL
+select count(t1.timestamp) 
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-25%'
+UNION ALL
+select count(t1.timestamp) 
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-26%'
+UNION ALL
+select count(t1.timestamp) 
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-27%'
+UNION ALL
+select count(t1.timestamp) 
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-28%'
+UNION ALL
+select count(t1.timestamp) 
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-29%'
+UNION ALL
+select count(t1.timestamp) 
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-30%'
+UNION ALL
+select count(t1.timestamp) 
+from [Landing Viewed] t1
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '2020-12-31%'
+
+6.График в Python:
+
+import seaborn as sns
+
+x = list(range(1, len(y)+1))
+y= [13056,
+12711,
+14109,
+12828,
+10910,
+11358,
+11754,
+13050,
+14155,
+16043,
+16025,
+13912,
+13529,
+13303,
+13631,
+2963,
+2320,
+2362,
+1620,
+1620,
+1724,
+1660]
+
+sns.barplot(x=x, y=y);
+
+
