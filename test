@@ -207,4 +207,30 @@ y= [13056,
 
 sns.barplot(x=x, y=y);
 
+7. Ночной трафик:
+select count(t1.timestamp)
+from [Landing Viewed] t1 JOIN [AB Test Hit] t2
+ON t1.anonymous_id=t2.anonymous_id
+WHERE CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '%02:%:%' 
+OR 
+CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '%03:%:%'
+OR
+CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '%04:%:%'
+OR
+CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '%05:%:%'
+OR
+CONVERT(VARCHAR(25), t1.timestamp, 126) LIKE '%06:%:%'
+
+Python:
+
+import matplotlib.pyplot as plt
+
+labels = 'Дневной трафик', 'Ночной трафик'
+sizes = [68299, 341481]
+
+fig1, ax1 = plt.subplots()
+ax1.pie(sizes, labels=labels, autopct='%1.1f%%',
+        shadow=True, startangle=90)
+ax1.axis('equal')
+plt.show()
 
