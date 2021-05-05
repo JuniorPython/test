@@ -377,3 +377,13 @@ y = [9567,9277,10207,9114,7524,7786,7737,8832,9832,11070,9728,9275,9474,9576]
 avg = int(sum(y)/len(y))
 color = ['tomato' if (x < avg) else 'gold' for x in y]
 sns.barplot(x=x, y=y, palette = color);
+
+
+8. Python график пользователей платформы Windows:
+
+import seaborn as sns
+
+x = list(range(1, len(y)+1))
+y = [8560,8904,7423,5787,6947,6520,7749,8226,8196,6974,6567,8046,7673,7818,8639,2903,2308,2261,2048,2053,2185,2472]
+#avg = int(sum(y)/len(y))
+sns.barplot(x=x, y=y);
